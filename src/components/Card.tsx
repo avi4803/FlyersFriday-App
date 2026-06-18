@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, Text, Image, Pressable, useWindowDimensions } from 'react-native';
-import { MapPin, Heart , Bookmark } from 'lucide-react-native';
+import { View, Text, Pressable, useWindowDimensions } from 'react-native';
+import { Image } from 'expo-image';
+import { MapPin, Bookmark } from 'lucide-react-native';
 import { Flyer } from '../constants/mockData';
-import { useFlyers } from '../context/FlyersContext';
+import { useFlyersActions } from '../context/FlyersContext';
+import { Colors } from '../constants/Colors';
 
 interface CardProps {
   flyer: Flyer;
@@ -10,11 +12,11 @@ interface CardProps {
   className?: string;
 }
 
-export const Card: React.FC<CardProps> = ({ flyer, onPress, className = '' }) => {
-  const { toggleSaveFlyer, isFlyerSaved } = useFlyers();
+export const Card = React.memo<CardProps>(({ flyer, onPress, className = '' }) => {
+  const { toggleSaveFlyer } = useFlyersActions();
   const { width } = useWindowDimensions();
   
-  const saved = isFlyerSaved(flyer.id);
+  const saved = !!flyer.saved;
   const isTablet = width > 768;
 
   let badgeBg = 'bg-slate-800';
@@ -39,7 +41,8 @@ export const Card: React.FC<CardProps> = ({ flyer, onPress, className = '' }) =>
         <Image
           source={{ uri: flyer.image }}
           className="w-full h-full rounded-xl"
-          resizeMode={flyer.storeName.includes('Whole Foods') || flyer.storeName.includes('Target') ? 'contain' : 'cover'}
+          contentFit={flyer.storeName.includes('Whole Foods') || flyer.storeName.includes('Target') ? 'contain' : 'cover'}
+          transition={200}
         />
 
         {/* Badge tag */}
@@ -61,7 +64,7 @@ export const Card: React.FC<CardProps> = ({ flyer, onPress, className = '' }) =>
         >
           <Bookmark
             size={16}
-            color={saved ? '#1a1a19ff' : '#2D2D2D'}
+            color={saved ? '#1a1a19ff' : Colors.textDark}
             fill={saved ? '#1a1a19ff' : 'transparent'}
           />
         </Pressable>
@@ -89,4 +92,4 @@ export const Card: React.FC<CardProps> = ({ flyer, onPress, className = '' }) =>
       </View>
     </Pressable>
   );
-};
+});

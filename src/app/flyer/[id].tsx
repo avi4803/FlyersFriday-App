@@ -1,14 +1,17 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, Pressable, Share, Platform, Linking } from 'react-native';
+import { View, Text, ScrollView, Pressable, Share, Platform, Linking } from 'react-native';
+import { Image } from 'expo-image';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeft, MoreHorizontal, Eye, Share2, Bookmark, Calendar, Compass, Phone, ChevronRight } from 'lucide-react-native';
-import { useFlyers } from '../../context/FlyersContext';
+import { useFlyers, useFlyersActions } from '../../context/FlyersContext';
+import { Colors } from '../../constants/Colors';
 
 export default function FlyerDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
-  const { flyers, toggleFollowStore, toggleSaveFlyer, isStoreFollowed, isFlyerSaved } = useFlyers();
+  const { flyers } = useFlyers();
+  const { toggleFollowStore, toggleSaveFlyer } = useFlyersActions();
 
   const flyer = flyers.find((f) => f.id === id);
 
@@ -23,8 +26,8 @@ export default function FlyerDetailsScreen() {
     );
   }
 
-  const isFollowed = isStoreFollowed(flyer.storeName);
-  const isSaved = isFlyerSaved(flyer.id);
+  const isFollowed = !!flyer.followed;
+  const isSaved = !!flyer.saved;
 
   const handleShare = async () => {
     try {
@@ -113,7 +116,8 @@ export default function FlyerDetailsScreen() {
           <Image
             source={{ uri: flyer.image }}
             className="w-[75%] h-[85%] bg-white shadow-2xl"
-            resizeMode="contain"
+            contentFit="contain"
+            transition={200}
           />
           {/* Pagination Tag Overlay */}
           <View className="absolute top-4 right-4 bg-black/50 px-3 py-1.5 rounded-full">
@@ -150,8 +154,8 @@ export default function FlyerDetailsScreen() {
               <View className="w-10 h-10 rounded-full bg-surface-container items-center justify-center active:bg-surface-container-high">
                 <Bookmark
                   size={16}
-                  color={isSaved ? '#e6c15d' : '#1b1b1a'}
-                  fill={isSaved ? '#e6c15d' : 'transparent'}
+                  color={isSaved ? Colors.primary : '#1b1b1a'}
+                  fill={isSaved ? Colors.primary : 'transparent'}
                 />
               </View>
               <Text className="text-[10px] font-semibold text-on-surface">Save</Text>

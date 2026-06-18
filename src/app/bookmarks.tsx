@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, FlatList, useWindowDimensions, Pressable } from 'react-native';
+import React, { useCallback } from 'react';
+import { View, Text, FlatList, useWindowDimensions, Pressable, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Bookmark } from 'lucide-react-native';
@@ -16,6 +16,14 @@ export default function BookmarksScreen() {
 
   // Filter for only bookmarked (saved) flyers
   const savedFlyers = flyers.filter((f) => f.saved);
+
+  // Stable renderItem callback
+  const renderItem = useCallback(({ item }: { item: any }) => (
+    <Card
+      flyer={item}
+      onPress={() => router.push(`/flyer/${item.id}` as any)}
+    />
+  ), [router]);
 
   return (
     <SafeAreaView className="flex-1 bg-surface" edges={['top', 'left', 'right']}>
@@ -45,12 +53,11 @@ export default function BookmarksScreen() {
           paddingBottom: 40,
         }}
         columnWrapperStyle={numColumns > 1 ? { justifyContent: 'space-between' } : undefined}
-        renderItem={({ item }) => (
-          <Card
-            flyer={item}
-            onPress={() => router.push(`/flyer/${item.id}`)}
-          />
-        )}
+        renderItem={renderItem}
+        initialNumToRender={6}
+        maxToRenderPerBatch={10}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
         ListEmptyComponent={
           <View className="flex-1 items-center justify-center py-32 px-8">
             <View className="w-16 h-16 rounded-full bg-gray-50 items-center justify-center mb-4">

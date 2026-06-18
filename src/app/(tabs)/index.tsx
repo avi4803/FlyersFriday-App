@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, useWindowDimensions, Pressable } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, FlatList, useWindowDimensions, Pressable, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Bell, Compass, Bookmark } from 'lucide-react-native';
@@ -15,18 +15,35 @@ export default function HomeScreen() {
   
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
+
+  // Debounce search query updates to avoid recalculating filtered list on every keystroke
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   const isTablet = width > 768;
   const numColumns = isTablet ? 3 : 2;
 
-  // Filter flyers based on category and search query
+  // Filter flyers based on category and debounced search query
   const filteredFlyers = flyers.filter((flyer) => {
     const matchesCategory = selectedCategory === 'All' || flyer.category === selectedCategory;
     const matchesSearch =
-      flyer.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      flyer.storeName.toLowerCase().includes(searchQuery.toLowerCase());
+      flyer.title.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
+      flyer.storeName.toLowerCase().includes(debouncedSearchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
+
+  // Stable renderItem callback
+  const renderItem = useCallback(({ item }: { item: any }) => (
+    <Card
+      flyer={item}
+      onPress={() => router.push(`/flyer/${item.id}` as any)}
+    />
+  ), [router]);
 
   const categories = [
     { name: 'All', emoji: '' },
@@ -157,12 +174,11 @@ export default function HomeScreen() {
           )
         }
         
-        renderItem={({ item }) => (
-          <Card
-            flyer={item}
-            onPress={() => router.push(`/flyer/${item.id}`)}
-          />
-        )}
+        renderItem={renderItem}
+        initialNumToRender={6}
+        maxToRenderPerBatch={10}
+        windowSize={5}
+        removeClippedSubviews={Platform.OS === 'android'}
         
         ListEmptyComponent={
           <View className="flex-1 items-center justify-center py-20 px-8">

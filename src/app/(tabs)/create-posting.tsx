@@ -4,13 +4,13 @@ import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { X, Image as ImageIcon, ChevronRight } from 'lucide-react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { useFlyers } from '../../context/FlyersContext';
+import { useFlyersActions } from '../../context/FlyersContext';
 import { InputField } from '../../components/InputField';
 import { SelectField } from '../../components/SelectField';
 
 export default function CreatePostingScreen() {
   const router = useRouter();
-  const { addFlyer } = useFlyers();
+  const { addFlyer } = useFlyersActions();
 
   // Form State
   const [title, setTitle] = useState('');
