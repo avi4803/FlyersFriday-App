@@ -1,56 +1,110 @@
-# Welcome to your Expo app 👋
+# Flyers Friday - Mobile App Developer Assessment
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is the repository for the **Mobile App Developer (Intern) Assessment** for **Flyers Friday**. Built using **React Native Expo** with **Expo Router** (file-based routing) and styled with **Tailwind CSS (NativeWind)**.
 
-## Get started
+---
 
-1. Install dependencies
+## 🚀 Technical Stack
 
+- **Framework**: [Expo SDK 56](https://expo.dev/) (React Native v0.85.3, React v19.2)
+- **Routing**: [Expo Router](https://docs.expo.dev/router/introduction/) (File-Based Universal Routing)
+- **Styling**: [NativeWind v2](https://www.nativewind.dev/) (Tailwind CSS for React Native)
+- **Icons**: [Lucide React Native](https://lucide.dev/guide/packages/lucide-react-native)
+- **Image Uploads**: [Expo Image Picker](https://docs.expo.dev/versions/latest/sdk/imagepicker/)
+- **Type Safety**: [TypeScript](https://www.typescriptlang.org/)
+
+---
+
+## 📦 Directory Structure
+
+```
+Flyers_Friday/
+├── assets/                   # Media assets and custom native tab icons
+├── src/
+│   ├── app/                  # File-based routing views
+│   │   ├── _layout.tsx       # Root layout, Stack Navigator & FlyersProvider
+│   │   ├── (tabs)/           # Bottom tabs group navigator
+│   │   │   ├── _layout.tsx   # Universal tabs routing layout
+│   │   │   ├── index.tsx     # 1️⃣ Local Flyers Feed Screen (Home)
+│   │   │   ├── map.tsx       # Mock Map Screen (High-fidelity pins & navigation)
+│   │   │   ├── deals.tsx     # Mock Deals Screen (Stylized coupon codes)
+│   │   │   └── profile.tsx   # Mock Profile Screen (User stats & context counts)
+│   │   ├── flyer/
+│   │   │   └── [id].tsx      # 2️⃣ Flyer Details Screen (Dynamic stack route)
+│   │   └── create-posting.tsx# 3️⃣ Create New Posting Screen (Interactive form)
+│   ├── components/           # Reusable UI & Layout components
+│   │   ├── ui/
+│   │   │   ├── Button.tsx    # Custom styled Buttons (FAB, Outline, Primary)
+│   │   │   ├── Card.tsx      # Flyer card component with save/share states
+│   │   │   ├── InputField.tsx# Controlled Form Inputs
+│   │   │   └── SelectField.tsx# Segmented control pills for selectors
+│   │   ├── CategoryTabs.tsx  # Horizontal sliding filters
+│   │   ├── SearchBar.tsx     # Local list search inputs
+│   │   └── app-tabs.tsx      # Universal tabs definitions (Native & Web)
+│   ├── constants/
+│   │   ├── mockData.ts       # Database schemas & rich Mock Flyers datasets
+│   │   └── theme.ts          # Core styling variables
+│   ├── context/
+│   │   └── FlyersContext.tsx # Global State manager (Save, Follow, Publish)
+│   └── global.css            # Typography setup
+├── tailwind.config.js        # Tailwind compiler configurations
+├── babel.config.js           # Babel plugins (NativeWind compiler integration)
+└── nativewind-env.d.ts       # TypeScript helper declaration
+```
+
+---
+
+## 🎯 Screen Features Completed
+
+### 1️⃣ Local Flyers Feed Screen (Home)
+- **Header**: Styled "Flyers Friday" brand header.
+- **Search Bar**: Real-time searching that filters flyers by title or store name dynamically.
+- **Category Tabs**: Horizontal scrollable categories filter (All, Grocery, Fashion, Electronics) to isolate listings.
+- **Flyer Cards**: Visual rendering containing dynamic distance tags, brand logo badges, share actions, and save toggles.
+- **Floating Action Button (FAB)**: Smoothly routes users directly to the creation flow.
+
+### 2️⃣ Flyer Details Screen
+- **Dynamic Routing**: Click a card on the feed to transition into a detailed view for that flyer.
+- **Follow Interaction**: Dedicated follow button for brands that synchronizes state with feed.
+- **Action Footers**:
+  - **Share**: Launches native device share dialog populated with card metadata.
+  - **Save**: Heart toggle that instantly saves the flyer to local state.
+  - **Get Directions**: Integrates React Native `Linking` API to open target store coordinates automatically in Apple Maps, Google Maps, or web search.
+
+### 3️⃣ Create New Posting Screen
+- **Image Picker**: Implemented native `expo-image-picker` to select mock flyers directly from device photo library, with a fallback placeholder.
+- **Dynamic Form**: Title, Description, Store, Validity, Location Address, and Category fields.
+- **Posting Frequency**: Customized segmented select tabs (Daily / Weekly / Monthly).
+- **Target Region Map Preview**: A visual stylized mapping layout representing the region location pin.
+- **Preview & Post**:
+  - **Preview**: Clicking "Preview" opens an overlay displaying exactly how the flyer card will look on the live feed.
+  - **Post**: Instantly adds the custom flyer to the top of the local state, resets inputs, and navigates back to the feed.
+
+### ⭐ Bonus & State Management
+- **Local Context**: Integrated `FlyersContext` to share reactive states globally. Creating a new posting makes it immediately visible on the Feed. Following a store and saving a flyer changes badge indicators instantly and updates count metrics on the Profile tab!
+- **Universal Compilation**: Formatted to compile on Web, iOS, and Android seamlessly.
+- **Premium Aesthetics**: Set up dark mode style configurations, clean grid cards, card ticket indentations, and elegant color systems.
+
+---
+
+## 🛠️ How to Run the App
+
+1. **Clone the repository** (if downloaded, navigate to the folder):
    ```bash
-   npm install
+   cd Flyers_Friday
    ```
 
-2. Start the app
+2. **Install node dependencies**:
+   ```bash
+   npm install --legacy-peer-deps
+   ```
 
+3. **Start the Expo server**:
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-### Other setup steps
-
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+4. **Testing Environments**:
+   - **Web Browser**: Press `w` in terminal to launch the web client.
+   - **Android Emulator / iOS Simulator**: Press `a` or `i` respectively.
+   - **Physical Device**: Download the **Expo Go** app from App Store / Google Play and scan the QR code displayed in your terminal.
