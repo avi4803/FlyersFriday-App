@@ -14,6 +14,7 @@ export interface Flyer {
   saved?: boolean;
   badgeText?: string;
   badgeColor?: 'red' | 'yellow' | 'green' | 'slate' | 'default';
+  frequency?: string;
 }
 
 export const INITIAL_FLYERS: Flyer[] = [

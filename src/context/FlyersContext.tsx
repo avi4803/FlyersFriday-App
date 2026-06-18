@@ -17,6 +17,7 @@ interface FlyersActionsContextType {
     image: string | null;
     validUntil: string;
     location: string;
+    frequency?: string;
   }) => void;
   toggleFollowStore: (storeName: string) => void;
   toggleSaveFlyer: (id: string) => void;
@@ -71,6 +72,7 @@ export const FlyersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     image: string | null;
     validUntil: string;
     location: string;
+    frequency?: string;
   }) => {
     setFlyers((prevFlyers) => {
       const isStoreFollowed = (storeName: string): boolean => {
@@ -92,6 +94,7 @@ export const FlyersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         location: newFlyer.location || 'Springfield Shopping Center',
         followed: isStoreFollowed(newFlyer.storeName),
         saved: false,
+        frequency: newFlyer.frequency || 'Weekly',
       };
 
       return [freshFlyer, ...prevFlyers];

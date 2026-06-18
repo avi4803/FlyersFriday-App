@@ -113,12 +113,14 @@ export default function FlyerDetailsScreen() {
 
         {/* Flyer Visual/Carousel */}
         <View className="relative w-full aspect-[3/4] bg-[#7a9b8e] items-center justify-center overflow-hidden">
-          <Image
-            source={{ uri: flyer.image }}
-            className="w-[75%] h-[85%] bg-white shadow-2xl"
-            contentFit="contain"
-            transition={200}
-          />
+          <View className="w-[75%] h-[85%] bg-white shadow-2xl">
+            <Image
+              source={{ uri: flyer.image }}
+              style={{ width: '100%', height: '100%' }}
+              contentFit="contain"
+              transition={200}
+            />
+          </View>
           {/* Pagination Tag Overlay */}
           <View className="absolute top-4 right-4 bg-black/50 px-3 py-1.5 rounded-full">
             <Text className="text-white text-xs font-bold">1 / 5</Text>

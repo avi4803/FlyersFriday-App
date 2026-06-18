@@ -80,9 +80,18 @@ export default function CreatePostingScreen() {
         image,
         validUntil,
         location,
+        frequency,
       });
 
       setPreviewVisible(false);
+      
+      // Clear form state for the next posting
+      setTitle('');
+      setDescription('');
+      setImage(null);
+      setFrequency('Weekly');
+      setErrors({});
+
       Alert.alert('Success', 'Flyer posted successfully!', [
         { text: 'OK', onPress: () => router.push('/' as any) },
       ]);

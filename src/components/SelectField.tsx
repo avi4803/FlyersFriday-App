@@ -32,9 +32,15 @@ export const SelectField: React.FC<SelectFieldProps> = ({
             <Pressable
               key={option}
               onPress={() => onValueChange(option)}
-              className={`flex-1 py-2 rounded-lg items-center justify-center ${
-                isActive ? 'bg-[#e6c15d] shadow-sm' : 'bg-transparent active:bg-gray-100'
-              }`}
+              style={{
+                flex: 1,
+                paddingVertical: 10,
+                borderRadius: 10,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: isActive ? '#e6c15d' : 'transparent',
+              }}
+              className="active:bg-gray-100"
             >
               <Text
                 className={`text-xs font-bold ${

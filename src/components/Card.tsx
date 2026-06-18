@@ -40,7 +40,7 @@ export const Card = React.memo<CardProps>(({ flyer, onPress, className = '' }) =
       <View className="relative bg-white aspect-[4/5] shadow-sm border border-gray-100 rounded-2xl items-center justify-center overflow-hidden">
         <Image
           source={{ uri: flyer.image }}
-          className="w-full h-full rounded-xl"
+          style={{ width: '100%', height: '100%', borderRadius: 12 }}
           contentFit={flyer.storeName.includes('Whole Foods') || flyer.storeName.includes('Target') ? 'contain' : 'cover'}
           transition={200}
         />
